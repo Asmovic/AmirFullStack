@@ -8,8 +8,18 @@ const userSchema = new Schema({
     password: String
 })
 
+
+const memberSchema = new Schema({
+    name: String,
+    stateCode: String,
+    school: String,
+    age: { default: 0, type: Number }
+})
+
 const userModel = db.model('user', userSchema);
+const memberModel = db.model('member', memberSchema);
 
 module.exports = {
-    userModel
+    userModel,
+    memberModel
 }

@@ -1,4 +1,4 @@
-const { userModel } = require('../Model/users');
+const { userModel, memberModel } = require('../Model/users');
 
 module.exports = (app) => {
     app.get('/', (req, res) => {
@@ -13,7 +13,7 @@ module.exports = (app) => {
                 console.log('error.....')
                 res.send(err);
             } else {
-                res.send(userPost);
+                res.send("user saved successfully");
             }
         });
     };
@@ -29,8 +29,33 @@ module.exports = (app) => {
             }
         }).sort({ username: 1 });
     };
-
     app.get('/users', allUsers);
+
+    let newMember = (req, res) => {
+        let member = new memberModel(req.body);
+
+        member.save((err, data) => {
+            if (err) {
+                res.status('400').send(err);
+            } else {
+                res.status('201').send(data)
+            }
+        })
+    }
+
+    app.post('/member', newMember);
+
+
+    let allMembers = (req, res) => {
+        memberModel.find({}, (err, posts) => {
+            if (err) {
+                res.send(err);
+            } else {
+                res.json(posts);
+            }
+        }).sort({ name: 1 });
+    };
+    app.get('/members', allMembers);
 
 }
 
